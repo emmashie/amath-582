@@ -30,6 +30,12 @@ z = x
 [X, Y, Z] = np.meshgrid(x,y,z, indexing='ij')
 [Kx,Ky,Kz] = np.meshgrid(ks,ks,ks, indexing='ij')
 
+### NOTE: Matlab convention is (Y, X, Z) in meshgrid versus (X, Y, Z) here, 
+### so x and y are actually flipped throughout the code 
+### variables are not switched, but x-y labels for plotting and submarine
+### coordinate reporting are switched to be consistent with Matlab
+
+
 # reshape data into 4-d time-spatial data array
 Un = np.asarray([np.reshape(data[:,i], (n,n,n), order='F') for i in range(data.shape[-1])])
 
@@ -50,19 +56,20 @@ kx_avg = np.mean(kx)
 ky_avg = np.mean(ky)
 kz_avg = np.mean(kz)
 
+
 if 0: # plotting code for isosurface of normalized and averaged data
 	fig = go.Figure(data = go.Isosurface(
 					x=Kx.flatten(),
 					y=Ky.flatten(),
 					z=Kz.flatten(),
 					value=Un_avg_normalized.flatten(),
-					isomin=0.7,
+					isomin=0.2,
     				isomax=1,
     				surface_count=15,
     				opacity=0.3))
 	fig.update_layout(scene = dict(
-                    xaxis_title='kx',
-                    yaxis_title='ky',
+                    xaxis_title='ky', 
+                    yaxis_title='kx',
                     zaxis_title='kz'))
 	fig.show()
 
@@ -86,8 +93,8 @@ if 0: # plotting gaussian filter
     				surface_count=15,
     				opacity=0.3))
 	fig.update_layout(scene = dict(
-                    xaxis_title='kx',
-                    yaxis_title='ky',
+                    xaxis_title='ky',
+                    yaxis_title='kx',
                     zaxis_title='kz'))
 	fig.show()
 
@@ -108,9 +115,9 @@ sub_z = np.asarray([z[int(sub_ind[i,2])] for i in range(len(sub_ind))])
 if 0: # plotting submarine path
 	fig = plt.figure()
 	ax = plt.axes(projection='3d')
-	ax.plot(sub_x, sub_y, sub_z, color='black')
-	ax.plot(sub_x[-1], sub_y[-1], sub_z[-1], 'o', color='tab:blue')
-	ax.plot(sub_x[0], sub_y[0], sub_z[0], 'o', color='tab:green')
+	ax.plot(sub_y, sub_x, sub_z, color='black')
+	ax.plot(sub_y[-1], sub_x[-1], sub_z[-1], 'o', color='tab:blue')
+	ax.plot(sub_y[0], sub_x[0], sub_z[0], 'o', color='tab:green')
 	ax.set_xlabel('X')
 	ax.set_ylabel('Y')
 	ax.set_zlabel('Z')
@@ -118,19 +125,23 @@ if 0: # plotting submarine path
 	ax.set_ylim((-L,L))
 	ax.set_zlim((-L,L))
 	ax.locator_params(nbins=5)
-	fig.savefig('sub_path.png', transparent=True)
+	fig.savefig('sub_path.png')
 
 if 0: # plotting aircraft path
 	plt.style.use('ggplot')
 	fig, ax = plt.subplots()
-	ax.plot(sub_x, sub_y, color='black')
-	ax.plot(sub_x[-1], sub_y[-1], 'o', color='tab:blue')
-	ax.plot(sub_x[0], sub_y[0], 'o', color='tab:green')
-	ax.set_xlabel('X')
-	ax.set_ylabel('Y')
+	ax.plot(sub_y, sub_x, color='black')
+	ax.plot(sub_y[-1], sub_x[-1], 'o', color='tab:blue')
+	ax.plot(sub_y[0], sub_x[0], 'o', color='tab:green')
+	ax.set_xlabel('X', fontsize=14)
+	ax.set_ylabel('Y', fontsize=14)
+	ax.set_xticks(np.arange(-L, L)[::3])
+	ax.set_yticks(np.arange(-L, L)[::3])
+	ax.set_xticklabels(np.arange(-L, L)[::3], fontsize=14)
+	ax.set_yticklabels(np.arange(-L, L)[::3], fontsize=14)	
 	ax.set_xlim((-L,L))
-	ax.set_ylim((-L,L))
-	fig.savefig('air_path.png', transparent=True)
+	ax.set_ylim((-L,L))	
+	fig.savefig('air_path.png')
 
 if 0:
 	# write x, y, z coordinates to csv for table generation

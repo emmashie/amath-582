@@ -35,19 +35,25 @@ for i in range(len(np.unique(label_train))):
 ### three digit compare
 digits_hard = [3, 5, 8]
 success_rates_lda_3hard, success_rates_dct_3hard, success_rates_svm_3hard = f.compare_classify(X_train, label_train, X_test, label_test, digits_hard)
+print('done with 1')
+
 digits_easy = [0, 3, 6]
 success_rates_lda_3easy, success_rates_dct_3easy, success_rates_svm_3easy = f.compare_classify(X_train, label_train, X_test, label_test, digits_easy)
+print('done with 2')
 ### all digit compare
 success_rates_lda_all, success_rates_dct_all, success_rates_svm_all = f.compare_classify(X_train, label_train, X_test, label_test, np.unique(label_train))
 
-print('done with 3 and 10 digit with test data')
+print('done with 3')
 
 digits_hard = [3, 5, 8]
 train_success_rates_lda_3hard, train_success_rates_dct_3hard, train_success_rates_svm_3hard = f.compare_classify(X_train, label_train, X_train, label_train, digits_hard)
+print('done with 4')
 digits_easy = [0, 3, 6]
 train_success_rates_lda_3easy, train_success_rates_dct_3easy, train_success_rates_svm_3easy = f.compare_classify(X_train, label_train, X_train, label_train, digits_easy)
 ### all digit compare
+print('done with 5')
 train_success_rates_lda_all, train_success_rates_dct_all, train_success_rates_svm_all = f.compare_classify(X_train, label_train, X_train, label_train, np.unique(label_train))
+print('done with 6')
 
 
 
@@ -146,7 +152,7 @@ if 1:
 	ax.plot(np.arange(3), np.array([success_rates_lda_3easy, success_rates_dct_3easy, success_rates_svm_3easy]), 'o-', color='tab:green', label='0, 3, 6 digits')
 	ax.plot(np.array([success_rates_lda_all, success_rates_dct_all, success_rates_svm_all]), 'o-', color='tab:grey', label='All digits')
 	ax.plot(np.arange(3), np.array([train_success_rates_lda_3hard, train_success_rates_dct_3hard, train_success_rates_svm_3hard]), 'o--', color='tab:blue')
-	ax.plot(np.arange(3), np.array([train_success_rates_lda_3easy, train_success_rates_dct_3easy, train_success_rates_svm_3easy]), 'o-', color='tab:green')
+	ax.plot(np.arange(3), np.array([train_success_rates_lda_3easy, train_success_rates_dct_3easy, train_success_rates_svm_3easy]), 'o--', color='tab:green')
 	ax.plot(np.array([train_success_rates_lda_all, train_success_rates_dct_all, train_success_rates_svm_all]), 'o--', color='tab:grey')
 	ax.legend(loc='best')
 	ax.set_ylabel('Success Rate')
